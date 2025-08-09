@@ -1,0 +1,51 @@
+# Logs
+*.log
+logs/
+
+# Credentials and secrets
+*credentials*.txt
+*.env
+.env*
+secrets/
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Backup files
+*.backup
+*.bak
+backup/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Test files
+test-*
+*-test.*
+
+# MinIO specific
+minio-data/
+cache/
+*.pem
+*.crt
+*.key
+
+# Kubernetes generated files
+*.yaml.generated
+kustomization.yaml.tmp
