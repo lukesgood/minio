@@ -1,110 +1,131 @@
-## 완성된 MinIO 설치 패키지
+# MinIO Distributed Mode Installation Suite
 
-MinIO 분산모드와 성능최적화가 포함된 전체 설치 스크립트와 가이드 문서
+Complete installation and optimization suite for MinIO distributed mode on both bare metal and Kubernetes environments.
 
-### 📁 디렉토리 구조
+## Directory Structure
 
+```
 minio/
-├── README.md                                 # 메인 가이드
-├── bare-metal/                              # 베어메탈 설치
+├── bare-metal/
 │   ├── scripts/
-│   │   ├── install-minio-distributed.sh     # 영문 설치 스크립트
-│   │   └── install-minio-distributed-ko.sh  # 한글 설치 스크립트
-│   ├── configs/                             # 설정 파일들
+│   │   ├── install-minio-distributed.sh      # English installation script
+│   │   └── install-minio-distributed-ko.sh   # Korean installation script
+│   ├── configs/
 │   └── docs/
 │       ├── en/
-│       │   └── INSTALLATION_GUIDE.md        # 영문 설치 가이드
-│       └── ko/                              # 한글 설치 가이드 (예정)
-└── kubernetes/                              # 쿠버네티스 설치
-    ├── scripts/
-    │   ├── install-minio-k8s.sh             # 영문 K8s 설치 스크립트
-    │   └── install-minio-k8s-ko.sh          # 한글 K8s 설치 스크립트
-    ├── configs/                             # K8s 설정 파일들
-    └── docs/
-        ├── en/                              # 영문 K8s 가이드 (예정)
-        └── ko/                              # 한글 K8s 가이드 (예정)
+│       │   └── INSTALLATION_GUIDE.md         # English installation guide
+│       └── ko/
+│           └── INSTALLATION_GUIDE.md         # Korean installation guide
+├── kubernetes/
+│   ├── scripts/
+│   │   ├── install-minio-k8s.sh              # English K8s installation script
+│   │   └── install-minio-k8s-ko.sh           # Korean K8s installation script
+│   ├── configs/
+│   └── docs/
+│       ├── en/
+│       │   └── INSTALLATION_GUIDE.md         # English K8s installation guide
+│       └── ko/
+│           └── INSTALLATION_GUIDE.md         # Korean K8s installation guide
+└── README.md                                 # This file
+```
 
+## Quick Start
 
-### 🚀 주요 기능
+### Bare Metal Installation
 
-1. 베어메탈 설치 스크립트
-• 자동 OS 감지 (Ubuntu, CentOS, RHEL, Rocky Linux)
-• MinIO 바이너리 자동 다운로드 및 설치
-• 시스템 사용자 및 디렉토리 생성
-• systemd 서비스 구성
-• 방화벽 자동 설정
-• 성능 최적화 적용
+**English:**
+```bash
+cd bare-metal/scripts
+sudo ./install-minio-distributed.sh --nodes node1,node2,node3,node4 --drives 4 --optimize
+```
 
-2. Kubernetes 설치 스크립트
-• 네임스페이스 및 리소스 자동 생성
-• StorageClass 및 PV/PVC 구성
-• StatefulSet 기반 분산 배포
-• 서비스 및 로드밸런서 설정
-• Finalizer 기반 데이터 보호
-• 노드 최적화 DaemonSet
+**Korean:**
+```bash
+cd bare-metal/scripts
+sudo ./install-minio-distributed-ko.sh --nodes node1,node2,node3,node4 --drives 4 --optimize
+```
 
-3. 성능 최적화
-• 이전 대화에서 논의된 커널 파라미터 최적화
-• 네트워크 버퍼 크기 조정 (25Gbps+ 지원)
-• 메모리 관리 최적화 (dirty ratio, swappiness)
-• I/O 스케줄러 최적화 (NVMe SSD용)
-• TCP 혼잡 제어 (BBR) 설정
+### Kubernetes Installation
 
-### 📋 사용 방법
+**English:**
+```bash
+cd kubernetes/scripts
+./install-minio-k8s.sh --replicas 4 --drives-per-node 2 --optimize
+```
 
-베어메탈 설치:
-bash
-cd /home/luke/qcli/minio/bare-metal/scripts
+**Korean:**
+```bash
+cd kubernetes/scripts
+./install-minio-k8s-ko.sh --replicas 4 --drives-per-node 2 --optimize
+```
 
-# 영문 버전
-sudo ./install-minio-distributed.sh \
-  --nodes node1,node2,node3,node4 \
-  --drives 4 \
-  --optimize
+## Features
 
-# 한글 버전
-sudo ./install-minio-distributed-ko.sh \
-  --nodes node1,node2,node3,node4 \
-  --drives 4 \
-  --optimize
+### Performance Optimizations
+- Kernel parameter tuning for high-throughput I/O
+- Network buffer optimization for 25Gbps+ networks
+- Memory management tuning for large-scale operations
+- I/O scheduler optimization for NVMe SSDs
+- TCP congestion control optimization (BBR)
 
+### Security Features
+- Automatic credential generation
+- Finalizer protection for data safety
+- Secure systemd service configuration
+- Firewall configuration
+- TLS support preparation
 
-Kubernetes 설치:
-bash
-cd /home/luke/qcli/minio/kubernetes/scripts
+### High Availability
+- Multi-node distributed architecture
+- Automatic failover capabilities
+- Data redundancy and erasure coding
+- Health monitoring and alerting
 
-# 영문 버전
-./install-minio-k8s.sh \
-  --replicas 4 \
-  --drives-per-node 2 \
-  --optimize
+### Monitoring and Management
+- Comprehensive logging configuration
+- Performance metrics collection
+- Cluster health monitoring
+- Administrative tools integration
 
-# 한글 버전
-./install-minio-k8s-ko.sh \
-  --replicas 4 \
-  --drives-per-node 2 \
-  --optimize
+## Prerequisites
 
+### Bare Metal
+- 4+ servers with NVMe SSDs
+- 16+ CPU cores per server
+- 64GB+ RAM per server (128GB+ recommended)
+- 25Gbps+ network (10Gbps minimum)
+- Ubuntu 20.04+ or CentOS 8+
 
-### 🔧 포함된 최적화 설정
+### Kubernetes
+- Kubernetes cluster with 4+ nodes
+- Local storage or CSI driver
+- StorageClass configuration
+- Network policies support
 
-커널 파라미터:
-• net.core.rmem_max = 134217728 (128MB 수신 버퍼)
-• net.core.wmem_max = 134217728 (128MB 송신 버퍼)
-• vm.dirty_ratio = 5 (더티 페이지 비율)
-• vm.swappiness = 1 (스왑 사용 최소화)
-• fs.file-max = 1048576 (파일 디스크립터 한계)
+## Documentation
 
-MinIO 환경 변수:
-• 캐시 드라이브 설정
-• 압축 최적화
-• API 요청 한계 조정
-• 연결 관리 최적화
+Comprehensive installation guides are available in both English and Korean:
 
-### 📚 문서화
+- **Bare Metal English**: [bare-metal/docs/en/INSTALLATION_GUIDE.md](bare-metal/docs/en/INSTALLATION_GUIDE.md)
+- **Bare Metal Korean**: [bare-metal/docs/ko/INSTALLATION_GUIDE.md](bare-metal/docs/ko/INSTALLATION_GUIDE.md)
+- **Kubernetes English**: [kubernetes/docs/en/INSTALLATION_GUIDE.md](kubernetes/docs/en/INSTALLATION_GUIDE.md)
+- **Kubernetes Korean**: [kubernetes/docs/ko/INSTALLATION_GUIDE.md](kubernetes/docs/ko/INSTALLATION_GUIDE.md)
 
-• **영문 설치 가이드**: 상세한 하드웨어 요구사항, 설치 과정, 성능 튜닝, 문제 해결
-• **한글 설치 가이드**: 한국어 사용자를 위한 완전한 번역 버전
-• **README 파일**: 빠른 시작 가이드 및 전체 구조 설명
+## Support
 
-이 패키지는 MinIO 성능 최적화 권장사항과 단일 Pod per Node 아키텍처를 모두 반영한 설치 솔루션
+For issues and questions:
+1. Check the troubleshooting section in the installation guides
+2. Review MinIO official documentation: https://docs.min.io/
+3. Visit MinIO community forum: https://github.com/minio/minio/discussions
+
+## License
+
+This installation suite is provided under the Apache 2.0 License.
+
+## Contributing
+
+Contributions are welcome! Please read the contributing guidelines and submit pull requests for any improvements.
+
+---
+
+**Note**: This installation suite is based on MinIO performance optimization best practices and includes kernel-level optimizations discussed in previous technical analyses.
